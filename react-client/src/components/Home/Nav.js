@@ -5,50 +5,8 @@ const jwtDecode = require('jwt-decode');
 
 
 class Nav extends React.Component {
-	constructor(props) {
-		super(props);
-
-		this.state = {
-			isLoggedIn: false,
-			userName: ''
-		}
-		this.signOut = this.signOut.bind(this);
-	}
-
-	// Component did mount is checking whether the randomly generated JWT token is stored in the local storage
-	// if it has been saved then change the state of loggedIn to true and then save the username in the state as well
-	componentDidMount() {
-		console.log('componentdidmount')
-		if(localStorage.getItem('token')){
-			this.setState({
-				isLoggedIn: true
-			});
-			this.setState({
-				userName: jwtDecode(localStorage.getItem('token')).firstName
-			})
-		} else {
-			this.setState({
-				isLoggedIn: false
-			});
-		}
-	}
-	// componentWillMount() {
-	// 	if(localStorage.getItem('token')){
-	// 	this.setState({
-	// 		userName: jwtDecode(localStorage.getItem('token')).firstName
-	// 	})
-	// }
-	// }
- TohomePage = () => {
-	window.location.assign('/');
-}
- ToEvents = () => {
-    $("#clickEvent").click(function() {
-        $('html, body').animate({
-            scrollTop: $("#events").offset().top
-        }, 2000);
-    });
-}
+    constructor(props) {
+        super(props);
 
         this.state = {
             isLoggedIn: false,
@@ -75,7 +33,9 @@ class Nav extends React.Component {
             });
         }
     }
-
+    ToHomePage = () => {
+		window.location.assign('/');
+	}
     ToEvents = () => {
         $("#clickEvent").click(function () {
             $('html, body').animate({
@@ -149,7 +109,7 @@ class Nav extends React.Component {
                         <li className="active"><a href="/">Home</a></li>
                         <li><a href="javascript:void(0);" onClick={this.ToAbout} id="clickAbout">About</a></li>
                         <li><a href="#" data-toggle="modal" data-target="#myModal">Contact us</a></li>
-                        <img src={zahgan}></img>
+                        <img src={zahgan} onClick={this.ToHomePage} style={{cursor: 'pointer'}}></img>
                         <li style={{ 'display': this.state.isLoggedIn === false ? 'block' : 'none' }}><a href="/SignInCreator">Manager</a></li>
                         <li><a href="javascript:void(0);" onClick={this.ToEvents} id="clickEvent">Events</a></li>
                         <li style={{ 'display': this.state.isLoggedIn === false ? 'block' : 'none' }}><a href="/signin">Sign in</a></li>
