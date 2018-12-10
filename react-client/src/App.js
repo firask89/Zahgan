@@ -50,16 +50,10 @@ class App extends Component {
       <BrowserRouter>
         <div className="App">
           <div>
-          <HomeClass items={this.state.items}/>
+            <HomeClass items={this.state.items}/>
             <Nav />
             <Switch>
-              <Route path='/HomeClass' render={() => {
-                return (
-                  <HomeClass items={this.state.items} />
-                )
-              }} />
               <Route path='/SignInCreator' component={SignInCreator} />
-              <Route path='/Creator' component={Create} />
               <Route path='/signup' component={Signup} />
               <Route path='/signin' component={Signin} />
               <Route path='/location' component={location} />
@@ -76,3 +70,11 @@ class App extends Component {
 }
 
 export default App;
+
+/*
+              <Route path='/HomeClass' render={() => {
+                return (
+                  <HomeClass items={this.state.items} />
+                )
+              }} />
+              */

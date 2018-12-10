@@ -57,111 +57,63 @@ class Eventcreat extends React.Component {
         console.log("my data", data)
       }
     });
-
-
-
-
-    // alert(obj.eventName + ' saved !');
-
-    // $.ajax({
-    //   url: '/create',
-    //   success: (data) => {
-    //     console.log(data)
-    //     this.setState({
-    //       items: data
-    //     })
-    //   },
-    //   error: (err) => {
-    //     console.log('err', err);
-    //   }
-    // });
     event.preventDefault();
   }
 
 
-delete(x){
-    alert("ar u sure u want to delet :" + this.state.items.eventName)
+  delete(x) {
+    alert("are you sure you want to delete: " + this.state.items.eventName)
 
-    var id =  this.state.items._id
+    var id = this.state.items._id
     $.ajax({
-        type: "DELETE",
-        url: '/create/' + id,
-        success: function (data) {
-         alert( "deleted" )
-        }
-      });
-
-
-
-}
+      type: "DELETE",
+      url: '/create/' + id,
+      success: function (data) {
+        alert("deleted")
+      }
+    });
+  }
 
 
 
   render() {
-
-
-
     return (
+      <table class="table table-striped primary">
 
-     
+        <thead>
+          <tr class="bg-primary ">
+            <th scope="col " className="th-evenName">#</th>
+            <th scope="col" className="th-evenName">Event Name</th>
+            <th scope="col" className="th-evenName">attendees Number</th>
+            <th scope="col" className="th-atendees">attendees Data</th>
+            <th scope="col" className="th-atendees"></th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr className="primary">
+            <th scope="row"></th>
+            <td>{this.state.items.eventName}</td>
+            <td>{this.state.items.attending.length} / {this.state.items.availableSeats}</td>
+            <td>
+              {
+                this.state.items.attending.map((item) => {
+                  return (<div className="row" >
 
-
-
-
-       
-          <table class="table table-striped primary">
-         
-  <thead>
-    <tr class="bg-primary ">
-      <th scope="col " className="th-evenName">#</th>
-      <th scope="col" className="th-evenName">Event Name</th>
-      <th scope="col" className="th-evenName">attendees Number</th>
-      <th scope="col" className="th-atendees">attendees Data</th>
-      <th scope="col" className="th-atendees"></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr className="primary">
-      <th scope="row"></th>
-      <td>{this.state.items.eventName}</td>
-      <td>{this.state.items.attending.length} / {this.state.items.availableSeats}</td>
-      <td>                  
-                {
-                    this.state.items.attending.map((item) =>{
-                    return(<div className="row" >
-                       
-                     <div class="col-lg-4">name : {item.Name  } </div>
-                     <div class="row"></div>
-                     <div class="col-lg-4">
-                     phone : {item.Phone}
+                    <div class="col-lg-4">name : {item.Name} </div>
+                    <div class="row"></div>
+                    <div class="col-lg-4">
+                      phone : {item.Phone}
                     </div>
-                    </div>)
-                    
-                  
-                    })}</td>
-                    <td> <form>
+                  </div>)
+
+
+                })}</td>
+            <td> <form>
               <button className="row btn alert-danger" id="deletbutton" onClick={this.delete}>delete </button>
-              </form></td>
-    </tr>
-
-  </tbody>
-</table>
-
-       
-  
-
-              
-              
-            
-              
-                    
-                    
-             
-       
-       
-      
-        
-    
+            </form></td>
+          </tr>
+        </tbody>
+      </table>
     );
   }
 }

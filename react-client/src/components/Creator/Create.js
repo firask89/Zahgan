@@ -7,7 +7,7 @@ import Eventcreat from './Eventcreat'
 import MapForCreator from './mapForCreator'
 import Eventsets from './Eventsets'
 import Eventcreatshow from './Eventcreatshow'
-import {BrowserRouter ,Route ,Switch} from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
 class Create extends React.Component {
@@ -15,7 +15,6 @@ class Create extends React.Component {
     center: {
       lat: 31.95522,
       lng: 35.94503,
-
     },
     zoom: 10
   };
@@ -33,14 +32,10 @@ class Create extends React.Component {
       location: '',
       items: [],
     };
-
-
-
-
     this.handleSubmit = this.handleSubmit.bind(this);
     this.allseats = this.allseats.bind(this);
   }
-// this function to show the map to pic place in creator pAGE 
+  // this function to show the map to pic place in creator pAGE 
   handleClickedMap = (e) => {
     console.log(e)
     let latitude = e.lat
@@ -50,10 +45,9 @@ class Create extends React.Component {
     })
     console.log(latitude, longtitude)
   }
-// this function to git all the data from data base befor render the bage 
-//silf envok function 
+  // this function to git all the data from data base befor render the bage 
+  //silf envok function 
   componentDidMount() {
-
     $.ajax({
       url: '/create',
       success: (data) => {
@@ -67,8 +61,7 @@ class Create extends React.Component {
       }
     });
   }
- //this function will take the data from props and send them to the data base to creat event 
- //
+  //this function will take the data from props and send them to the data base to creat event 
   handleSubmit(event) {
     var obj = {
       creatorName: this.state.host,
@@ -82,7 +75,7 @@ class Create extends React.Component {
       attending: []
     }
 
-  // pst requst using ajax 
+    // pst requst using ajax 
     $.ajax({
       type: "POST",
       url: '/create',
@@ -98,7 +91,7 @@ class Create extends React.Component {
 
 
     alert(obj.eventName + ' saved !');
-// after post we use ajux to get the data agean so the creataer page always will be updated 
+    // after post we use ajux to get the data agean so the creataer page always will be updated 
     $.ajax({
       url: '/create',
       success: (data) => {
@@ -127,44 +120,20 @@ class Create extends React.Component {
     return zz
   }
 
-
-////////////////////////////////////////////////////
-  // viewlest(props) {
-  //   var x = ""
-
-  //   var c = function (i) {
-
-  //     var xx = i.availableSeats - i.attending.length
-
-  //     x = x + `${i.eventName} : ${xx}/${i.availableSeats}   `
-  //   }
-  //   for (var i = 0; i < props.state.items.length; i++) {
-  //     c(props.state.items[i])
-  //   }
-
-  //   return x
-  // }
-  /////////////////////////////////////////////////////
-// colect the number of sets empty 
+  // colect the number of sets empty 
   allSeats(props) {
     var total = 0
 
     var totalfun = function (i) {
-
-
       var empty = i.availableSeats - i.attending.length
-
-      total = total + empty 
-
-
+      total = total + empty
     }
     for (var i = 0; i < props.state.items.length; i++) {
       totalfun(props.state.items[i])
     }
-
     return total
   }
-// to colect all resolved sets
+  // to colect all resolved sets
   reservedSeats(props) {
     var total = 0
 
@@ -194,49 +163,56 @@ class Create extends React.Component {
     })
   }
 
+  logOut() {
+    $.ajax({
+      url: '/creator/logout',
+      success: (data) => {
+        console.log("my data", data)
+        this.setState({
+          items: data
+        })
+        window.location.reload();
+      },
+      error: (err) => {
+        console.log('err', err);
+      }
+    });
+  }
+
 
   render() {
-
     return (
       <div>
-      <BrowserRouter>  
-      <div className="App">
-     
-    
-      <div>
-      
-     
-      
-      
-      
-      <Switch>
-
-<Route path='/Eventcreatshow' component={Eventcreatshow}/>
-<Route path='/Eventsets' component={Eventsets}/>
-</Switch>
-</div>
-
-</div>
-      </BrowserRouter>
-        <div class="container-fluid page-cont">
+        <BrowserRouter>
+          <div className="App">
+            <div>
+              <Switch>
+                <Route path='/Eventcreatshow' component={Eventcreatshow} />
+                <Route path='/Eventsets' component={Eventsets} />
+              </Switch>
+            </div>
+          </div>
+        </BrowserRouter>
+        <div className="container-fluid page-cont">
           <h6 className="list-group-item active main-color-bg">
             <span className="glyphicon glyphicon-cog" aria-hidden="true"></span> Dashboard
-           </h6>
-          <div class="row dash-row">
+            <button onClick={this.logOut.bind(this)}>Logout</button>
+          </h6> 
+          <div className="row dash-row">
 
-            <div class="col-4 data-box">
+            <div className="col-4 data-box">
               <div>
                 <h3><span>{this.state.items.length}</span> <a href="/Eventcreatshow"> Number of your events</a></h3>
               </div>
             </div>
 
-            <div class="col-4 data-box">
+            <div className="col-4 data-box">
               <div>
                 <h3><span>{this.allSeats(this)}</span><a href="/Eventsets">  Remaining seats for all events </a></h3>
               </div>
             </div>
 
-            <div class="col-4 data-box">
+            <div className="col-4 data-box">
               <div>
                 <h3><span>{this.reservedSeats(this)}</span> <a href="/Reserved"> Reserved seats for all events </a> </h3>
               </div>
@@ -244,25 +220,6 @@ class Create extends React.Component {
 
           </div>
         </div>
-        {/* <div className="container-fluid">
-
-          <div className="row ">
-
-            <div className="col-md-6">
-
-              <div className="list-group">
-                <h6 className="list-group-item active main-color-bg">
-                  <span className="glyphicon glyphicon-cog" aria-hidden="true"></span> Dashboard
-           </h6>
-                <h6 className="list-group-item"><span className="glyphicon glyphicon-list-alt" aria-hidden="true"></span> Number of your events : <h6 class="badge"> {this.state.items.length} </h6></h6>
-                <h6 className="list-group-item"><span className="glyphicon glyphicon-pencil" aria-hidden="true"></span>Remaning seats for each event <h6 class="badge"> {this.viewlest(this)} </h6></h6>
-              </div>
-s            </div>
-
-          </div>
-
-        </div> */}
-
         <div className="col-md-12">
 
 
@@ -344,11 +301,11 @@ s            </div>
               <div>
                 <div className="form-group row">
                   <label className="col-sm-2 col-form-label"> Event location:</label>
-                  <div class="col-sm-8">
+                  <div className="col-sm-8">
                     <input id="location-input" className="form-control" placeholder="city, street" value={this.state.location}
                       onClick={this.modal} />
                   </div>
-                  <div class="col-sm-2"><button type="button" class="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Map</button></div>
+                  <div className="col-sm-2"><button type="button" className="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Map</button></div>
                 </div>
               </div>
 
@@ -372,21 +329,10 @@ s            </div>
 
         </div>
 
-
-        {/* location modal */}
-
-
-
-
-
-
-
-
-        <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-          <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
-            <div class="modal-content">
-
-              <div class="modal-body">
+        <div className="modal fade" id="myModal" tabIndex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+          <div className="modal-dialog modal-dialog-centered modal-lg" role="document">
+            <div className="modal-content">
+              <div className="modal-body">
                 <div style={{ height: '100vh', width: '100%' }}>
                   <GoogleMapReact onClick={this.handleClickedMap}
                     bootstrapURLKeys={{ key: "AIzaSyD2IjGONmJ7Si4cNEZtNPNgPy5pVEt-_14" }}
@@ -397,24 +343,15 @@ s            </div>
                     <AnyReactComponent
                       lat={31.95522}
                       lng={35.94503}
-                      
-
                     />
                   </GoogleMapReact>
                 </div>
               </div>
-
             </div>
           </div>
         </div>
 
-
-        
       </div>
-
-
-
-
     );
   }
 }

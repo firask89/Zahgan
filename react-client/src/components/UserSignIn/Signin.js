@@ -33,10 +33,10 @@ class Signin extends React.Component {
           password: obj.password
         },
         success: (res) => {
-          console.log('res')
           alert(res.message)
+          console.log('user',res.token)
           if (res.success){
-              localStorage.setItem('token', res.token);
+            localStorage.setItem('token', res.token);
             this.setState({
                 isLoggedIn: true
             })
@@ -56,7 +56,6 @@ class Signin extends React.Component {
           }} />
       }
     return (
-
     <div className="wrapper">
     <form className="form-signin" onSubmit={this.handleSubmit}>       
       <h2 className="form-signin-heading">Please login</h2>
