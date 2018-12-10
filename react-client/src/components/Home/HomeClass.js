@@ -21,10 +21,10 @@ class HomeClass extends React.Component {
         console.log("HomeClass", this.props.items)
         return (
             <div>
-                <div className="container-fluid " >
+                <div className="container-fluid" >
                     <Slideshow />
                     <Vision />
-                    <div classsName="images">
+                    <div classsname="images">
                         <p className="main_title"><span>Events</span></p>
                         {
                             this.props.items.map((item) => {

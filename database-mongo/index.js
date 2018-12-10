@@ -7,15 +7,13 @@ const EventSchema = new Schema({
         required: [true, 'Name Field is Required']
     },
 
-   
-
     eventName: {
         type: String,
         required: [true, 'Name Field is Required']
     },
 
     cost:{
-        type:Number,
+        type: Number,
         required: [true, 'Name Field is Required']
     },
     des: {
