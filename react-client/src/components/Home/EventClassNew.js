@@ -185,10 +185,10 @@ class EventClassNew extends React.Component {
          <div className="images">
  
          <a href="#" onClick={this.showModal}>
-  <div class="card">
-    <figure class="front">
+  <div className="card">
+    <figure className="front">
       <img src={this.state.items.url} alt="front"/>
-      <div class="caption">
+      <div className="caption">
         <h2>{this.state.items.eventName}</h2>
         <p>{this.state.items.des}</p>
         <a href="#">View more</a>

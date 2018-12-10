@@ -12,10 +12,13 @@
   "heroku-postbuild": "cd react-client && npm install && npm install --only=dev --no-shrinkwrap && npm run build"
  },
  "dependencies": {
+  "jwt-decode": "^2.2.0",
   "bcrypt": "^3.0.2",
   "body-parser": "^1.18.3",
   "connect": "^3.6.6",
+  "cookie-parser": "^1.4.3",
   "express": "^4.15.0",
+  "express-session": "^1.15.6",
   "google-map-react": "^1.1.1",
   "jquery": "^3.1.1",
   "jsonwebtoken": "^8.4.0",

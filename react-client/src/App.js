@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import './App.css';
 import Nav from './components/Home/Nav'
-import {BrowserRouter ,Route ,Switch} from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import HomeClass from './components/Home/HomeClass'
 
 import Create from './components/Creator/Create'
@@ -23,12 +23,9 @@ class App extends Component {
   constructor() {
     super()
     this.state = {
-
       items: [],
       authorized: false
-
     }
-
   }
 
   componentDidMount() {
@@ -36,11 +33,9 @@ class App extends Component {
       url: '/create',
       type: "GET",
       success: (data) => {
-       
         this.setState({
           items: data
         })
-        
       },
       error: (err) => {
         console.log('err', err);
@@ -52,45 +47,34 @@ class App extends Component {
 
   render() {
     return (
-
-
-      <BrowserRouter>  
-      <div className="App">
-     
-    
-      <div>
-      
-     
-      
-      <Nav />
-      
-      <Switch>
-  <Route path='/HomeClass' render={()=>{
-    return (
-      
-      <HomeClass items={this.state.items} />
-    )}}
-  />
-
-<Route path='/SignInCreator' component={SignInCreator} />
-<Route path='/Creator' component={Create} />
-<Route path='/signup' component={Signup} />
-<Route path='/signin' component={Signin} />
-<Route path='/location' component={location}/>
-<Route path='/vision' component={vision}/>
-
-<Route path='/Eventcreatshow' component={Eventcreatshow}/>
-<Route path='/Eventsets' component={Eventsets}/>
-<Route path='/Reserved' component={Reserved}/>
-</Switch>
-</div>
-
-</div>
+      <BrowserRouter>
+        <div className="App">
+          <div>
+            <HomeClass items={this.state.items}/>
+            <Nav />
+            <Switch>
+              <Route path='/SignInCreator' component={SignInCreator} />
+              <Route path='/signup' component={Signup} />
+              <Route path='/signin' component={Signin} />
+              <Route path='/location' component={location} />
+              <Route path='/vision' component={vision} />
+              <Route path='/Eventcreatshow' component={Eventcreatshow} />
+              <Route path='/Eventsets' component={Eventsets} />
+              <Route path='/Reserved' component={Reserved} />
+            </Switch>
+          </div>
+        </div>
       </BrowserRouter>
-    
-     
     );
   }
 }
 
 export default App;
+
+/*
+              <Route path='/HomeClass' render={() => {
+                return (
+                  <HomeClass items={this.state.items} />
+                )
+              }} />
+              */

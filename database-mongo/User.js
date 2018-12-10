@@ -8,38 +8,42 @@ const UserSchema = new mongoose.Schema({
     type: String,
     default: ''
   },
+
   lastName: {
     type: String,
     default: ''
   },
+
   email: {
     type: String,
     default: ''
   },
+
   password: {
     type: String,
     default: ''
   },
+
   isDeleted: {
     type: Boolean,
     default: false
   },
+
   eventsAttence:{
     type:[]
   }
 });
 
 
- UserSchema.methods.getSpecificUser = (firstName, cb) => {
+UserSchema.methods.getSpecificUser = (firstName, cb) => {
   User.find({firstName: name}, (err, result) => {
-    if(err){
+    if(err) {
       return cb(err, null);
-    }else{
+    } else {
       return cb(null, result);
     }
   })
 }
-
 
 UserSchema.methods.generateHash = function(password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
