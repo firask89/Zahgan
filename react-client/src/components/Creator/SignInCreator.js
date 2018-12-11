@@ -11,18 +11,18 @@ class SignInCreator extends React.Component {
       email: '',
       password: '',
       isLoggedIn: false,
-      sess: ''
+      sess: '',
+      events: []
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
-    console.log('signInCreator componentdidmount')
+    $('#home').hide();
     $.ajax({
       type: "GET",
       url: '/creator/signin/check',
       success: (res) => {
-        console.log(res.sess)
         if (res.success) {
           this.setState({
             isLoggedIn: true,
@@ -46,8 +46,7 @@ class SignInCreator extends React.Component {
         password: obj.password
       },
       success: (res) => {
-        alert(res.message)
-        alert(res.sess)
+        alert('hello!')
         if (res.success) {
           this.setState({
             isLoggedIn: true,
@@ -56,6 +55,20 @@ class SignInCreator extends React.Component {
         }
       }
     });
+
+    $.ajax({
+        type: "POST",
+        url: '/creator/events',
+        data: {email: obj.email},
+        success: (res) => {
+            if (res.success) {
+                this.setState({
+                    events: res.events,
+                })
+            }
+        }
+    });
+
     event.preventDefault();
   }
 
@@ -63,7 +76,7 @@ class SignInCreator extends React.Component {
   render() {
     if (this.state.sess) {
       return (
-        <Create></Create>
+        <Create events={this.state.events}></Create>
       )
     } else {
       return (
@@ -80,9 +93,3 @@ class SignInCreator extends React.Component {
   }
 }
 export default SignInCreator
-
-/*
-        <Redirect to={{
-          pathname: '/creator',
-        }}></Redirect>
-        */

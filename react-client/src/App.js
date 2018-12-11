@@ -50,8 +50,10 @@ class App extends Component {
       <BrowserRouter>
         <div className="App">
           <div>
-            <HomeClass items={this.state.items}/>
             <Nav />
+            <div id='home'>
+              <HomeClass items={this.state.items} />
+            </div>
             <Switch>
               <Route path='/SignInCreator' component={SignInCreator} />
               <Route path='/signup' component={Signup} />

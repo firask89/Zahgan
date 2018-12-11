@@ -5,9 +5,10 @@ import GoogleMapReact from 'google-map-react';
 
 import Eventcreat from './Eventcreat'
 import Eventcreatsets from './Eventcreatsets'
+import Slideshow from '../Slider/Slideshow';
 
 
-import {BrowserRouter ,Route ,Switch} from 'react-router-dom'
+import { BrowserRouter, Route, Switch } from 'react-router-dom'
 
 
 
@@ -17,17 +18,13 @@ class Eventcreatshow extends React.Component {
     this.state = {
       items: [],
     };
-
-
-
   }
 
   componentDidMount() {
-
+    $('#home').hide();
     $.ajax({
       url: '/create',
       success: (data) => {
-        console.log(data)
         this.setState({
           items: data
         })
@@ -38,34 +35,20 @@ class Eventcreatshow extends React.Component {
     });
   }
 
-
-
-
-
- 
-
   render() {
-   
     return (
       <div>
-      
         <div>
-        
-{
-this.state.items.map((item) =>{
-return(<div >
-<Eventcreatsets item={item}/>
-</div>)
-
-})
-
-}  
-</div>
+          {
+            this.state.items.map((item) => {
+              return (<div >
+                <EventClassNew item={item} />
+                <Eventcreatsets item={item} />
+              </div>)
+            })
+          }
+        </div>
       </div>
-
-
-
-
     );
   }
 }

@@ -445,6 +445,19 @@ app.get('/getSpecificUser', function (req, res, next) {
   });
 });
 
+//get user's events
+app.post('/creator/events', function (req, res, next) {
+  var email = req.body.email;
+  console.log('email', email)
+  Event.find({email: email}, (err, result) => {
+    res.send({
+      success: true,
+      message: '!',
+      events: result,
+    });
+  });
+});
+
 // Verify Creator
 app.get('/account/verify', (req, res, next) => {
   // Get the token
