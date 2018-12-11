@@ -346,7 +346,7 @@ app.post('/creator/signin', (req, res, next) => {
         message: 'Error: Invalid Password.'
       });
     }
-
+    console.log("email in signin===      1")
     createSession(req, res, creator)
 
     // Otherwise correct creator
@@ -359,11 +359,13 @@ app.post('/creator/signin', (req, res, next) => {
           message: 'Error: server error.'
         });
       }
+      console.log("email in signin===" , email)
       return res.send({
         success: true,
         message: 'Valid Manager sign in',
         token: doc._id,
-        sess: req.session.creatorID
+        sess: req.session.creatorID,
+        email: email
       });
     })
   });
@@ -374,7 +376,8 @@ app.get('/creator/signin/check', (req, res, next) => {
   return res.send({
     success: true,
     message: 'Check!',
-    sess: req.session.creatorID
+    sess: req.session.creatorID,
+    email: req.session.creatorEmail
   })
 });
 
@@ -423,6 +426,8 @@ var createSession = function (req, res, newCreator) {
   req.session.regenerate(function (err) {
     if (err) { return err }
     req.session.creatorID = String(newCreator._id); //most important section of this function
+    req.session.creatorEmail = String(newCreator.email);
+    console.log('email in session', req.session.creatorEmail)
     req.session.cookie.expires = new Date(Date.now() + 3600000) //a date for expiration
     req.session.cookie.maxAge = 3600000; //a specific time to destroys
     req.session.save(function(err) {

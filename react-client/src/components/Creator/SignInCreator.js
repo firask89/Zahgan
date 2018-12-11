@@ -23,7 +23,9 @@ class SignInCreator extends React.Component {
       type: "GET",
       url: '/creator/signin/check',
       success: (res) => {
+        console.log('res.sess==============', res.sess, res.email)
         if (res.success) {
+          this.getEvents(res.email)
           this.setState({
             isLoggedIn: true,
             sess: res.sess
@@ -38,6 +40,7 @@ class SignInCreator extends React.Component {
       email: this.state.email,
       password: this.state.password
     }
+    console.log("submit====", obj)
     $.ajax({
       type: "POST",
       url: '/creator/signin',
@@ -48,6 +51,7 @@ class SignInCreator extends React.Component {
       success: (res) => {
         alert('hello!')
         if (res.success) {
+          this.getEvents(res.sess)
           this.setState({
             isLoggedIn: true,
             sess: res.sess
@@ -56,25 +60,31 @@ class SignInCreator extends React.Component {
       }
     });
 
-    $.ajax({
+    event.preventDefault();
+  }
+
+  getEvents(email) {
+    console.log('in get events =============', this.state.email, "2", email)
+    if (this.state.email || email) {
+      $.ajax({
         type: "POST",
         url: '/creator/events',
-        data: {email: obj.email},
+        data: { email: this.state.email || email },
         success: (res) => {
-            if (res.success) {
-                this.setState({
-                    events: res.events,
-                })
-            }
+          if (res.success) {
+            this.setState({
+              events: res.events,
+            })
+          }
         }
-    });
-
-    event.preventDefault();
+      });
+    }
   }
 
 
   render() {
-    if (this.state.sess) {
+    if (this.state.sess && this.state.events.length > 0) {
+      console.log(this.state.events)
       return (
         <Create events={this.state.events}></Create>
       )
