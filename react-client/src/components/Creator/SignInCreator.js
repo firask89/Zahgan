@@ -46,6 +46,7 @@ class SignInCreator extends React.Component {
         password: obj.password
       },
       success: (res) => {
+        alert('hello!')
         if (res.success) {
           this.setState({
             isLoggedIn: true,

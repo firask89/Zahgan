@@ -14,7 +14,6 @@ class CreatorEvents extends React.Component {
     }
 
     componentDidMount() {
-        console.log('hhellopoooooooo================',this.state.events)
     }
 
     handleSubmit(event) {
