@@ -21,7 +21,6 @@ class EventClassNew extends React.Component {
   }
 
   componentDidMount() {
-    console.log('componentdidmount')
     if (localStorage.getItem('token')) {
       this.setState({
         isLoggedIn: true
@@ -43,14 +42,11 @@ class EventClassNew extends React.Component {
   // take the data when its submit
 
   handleSubmit(event, item) {
-    console.log("secound parameter", this.state.items.attending)
     var obj = {
       Name: this.state.Name,
       Phone: this.state.Phone,
     }
     var id = this.state.items._id
-    console.log('Name', this.state.Name)
-    console.log("my items ana wy7ya", id)
     //var array =[obj]
     //var array= this.state.items.attending
     //getComputedStyle. 
@@ -66,36 +62,16 @@ class EventClassNew extends React.Component {
       url: '/create/' + id,
       data: yahya,
       success: function (data) {
-        console.log("my data", data)
         alert("successfully attended")
         document.getElementById("name").value = ''
         document.getElementById("phone").value = ''
       }
     });
     
-    
-
-
-    // alert(obj.eventName + ' saved !');
-
-    // $.ajax({
-    //   url: '/create',
-    //   success: (data) => {
-    //     console.log(data)
-    //     this.setState({
-    //       items: data
-    //     })
-    //   },
-    //   error: (err) => {
-    //     console.log('err', err);
-    //   }
-    // });
     event.preventDefault();
   }
 
   render() {
-
-    console.log('gele', this.state.items)
 
     return (
       <div>
@@ -104,10 +80,10 @@ class EventClassNew extends React.Component {
           show={this.state.show}
           onClose={this.showModal}>
       
-      <div className="row">
+          <div className="row">
      
-      <div className="col-sm-12">
-      <div className="Popup-images">
+            <div className="col-sm-12">
+              <div className="Popup-images">
               <img src={this.state.items.url}></img>
               </div>
               </div></div>
