@@ -17,7 +17,6 @@ import Footer from './components/Footer';
 import location from './components/about/pages/location';
 import vision from './components/about/pages/vision';
 
-
 class App extends Component {
 
   constructor() {
@@ -62,6 +61,7 @@ class App extends Component {
               <Route path='/Eventsets' component={Eventsets} />
               <Route path='/Reserved' component={Reserved} />
             </Switch>
+            <Footer />
           </div>
         </div>
       </BrowserRouter>

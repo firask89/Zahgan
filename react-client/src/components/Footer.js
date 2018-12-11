@@ -8,7 +8,7 @@ const Footer = () => {
     
  
   
-    <footer class="page-footer font-small special-color-dark pt-4">
+    <footer style={{fontSize:"16px"}} class="page-footer font-small special-color-dark pt-4">
     
         <div class="container">
     
@@ -47,7 +47,7 @@ const Footer = () => {
     
        
         <div class="footer-copyright text-center py-3">© 2018 Copyright:
-          <a href="https://mdbootstrap.com/education/bootstrap/"> MDBootstrap.com</a>
+          <a href="https://homerg.herokuapp.com/"> MaintenanceJs</a>
         </div>
     
     
