@@ -16,7 +16,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }))
-mongoose.connect('mongodb://amjad:amjad123@ds139251.mlab.com:39251/zahgan')
+// mongoose.connect('mongodb://amjad:amjad123@ds139251.mlab.com:39251/zahgan')
 
 //sessions
 app.use(cookieParser('shhhh, very secret'));
@@ -442,6 +442,19 @@ app.get('/getSpecificUser', function (req, res, next) {
       };
     });
     res.send(response);
+  });
+});
+
+//get user's events
+app.post('/creator/events', function (req, res, next) {
+  var email = req.body.email;
+  console.log('email', email)
+  Event.find({email: email}, (err, result) => {
+    res.send({
+      success: true,
+      message: '!',
+      events: result,
+    });
   });
 });
 

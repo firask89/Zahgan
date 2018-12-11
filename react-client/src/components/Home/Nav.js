@@ -1,3 +1,4 @@
+import { Redirect } from 'react-router-dom'
 import React from 'react'
 import zahgan from './zahgan.jpg';
 import $ from 'jquery';
@@ -13,7 +14,8 @@ class Nav extends React.Component {
         this.state = {
             isLoggedIn: false,
             modal: false,
-            userName: ''
+            userName: '',
+            events: false
         }
         this.signOut = this.signOut.bind(this);
         this.toggle = this.toggle.bind(this);
@@ -28,8 +30,6 @@ class Nav extends React.Component {
     // Component did mount is checking whether the randomly generated JWT token is stored in the local storage
     // if it has been saved then change the state of loggedIn to true and then save the username in the state as well
     componentDidMount() {
-        console.log('componentdidmount')
-        console.log(localStorage.getItem('token'))
         if (localStorage.getItem('token')) {
             this.setState({
                 isLoggedIn: true
@@ -47,11 +47,14 @@ class Nav extends React.Component {
 		window.location.assign('/');
 	}
     ToEvents = () => {
-        $("#clickEvent").click(function () {
-            $('html, body').animate({
-                scrollTop: $("#events").offset().top
-            }, 2000);
-        });
+        // $("#clickEvent").click(function () {
+        //     $('html, body').animate({
+        //         scrollTop: $("#events").offset().top
+        //     }, 2000);
+        // });
+        this.setState({
+            events: !this.state.events
+        })
     }
 
     ToAbout = () => {
@@ -87,7 +90,6 @@ class Nav extends React.Component {
                 token: localStorage.getItem('token')
             },
             success: (res) => {
-                console.log(res)
                 alert(res.message)
                 if (res.success) {
                     localStorage.removeItem('token');
@@ -111,7 +113,6 @@ class Nav extends React.Component {
 
 
     render() {
-        console.log('in nav render')
         return (
             <div>
                 <nav className="navbar navbar-expand-sm ">
@@ -121,7 +122,7 @@ class Nav extends React.Component {
                         <li><a href="javascript:void(0);"  onClick={this.toggle}>Contact us</a></li>
                         <img src={zahgan} onClick={this.ToHomePage} style={{cursor: 'pointer'}}></img>
                         <li style={{ 'display': this.state.isLoggedIn === false ? 'block' : 'none' }}><a href="/SignInCreator">Manager</a></li>
-                        <li><a href="javascript:void(0);" onClick={this.ToEvents} id="clickEvent">Events</a></li>
+                        <li><a href="/Eventsets" onClick={this.ToEvents} id="clickEvent">Events</a></li>
                         <li style={{ 'display': this.state.isLoggedIn === false ? 'block' : 'none' }}><a href="/signin">Sign in</a></li>
                         <li style={{ 'display': this.state.isLoggedIn === false ? 'block' : 'none' }}><a href="/signup">Sign up</a></li>
                         <li style={{ 'display': this.state.isLoggedIn === true ? 'block' : 'none' }}><a href="javascript:void(0);" onClick={this.signOut}>Log out</a></li>
@@ -131,7 +132,7 @@ class Nav extends React.Component {
                 </nav>
                 <div>
                   <Modal className={'modal-open'} isOpen={this.state.modal} toggle={this.toggle} centered={true} size={'lg'} >
-                    <ModalBody style={{background: 'linear-gradient(to right bottom, red, white)'}}>
+                    <ModalBody>
                       <h2 style={{ textAlign: 'center', fontWeight: "bold", margin:'-5px', fontFamily: 'Times New Roman'}}>Contact Us</h2>  <hr/>
                       <h4 > 
                         <p style={{textAlign: 'center', lineHeight:'23px', fontFamily: 'Times New Roman'}}><strong>Dear Valued User,</strong> <br/>   you can contact us whenever you want by: <br/> Phone number: <br/>0791333443 <br/> Email: <br/>www.zahgan@gmail.com <br/>Fax: <br/>xxxxxxxxxxxx</p>

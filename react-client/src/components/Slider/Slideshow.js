@@ -36,11 +36,9 @@ class Slideshow extends React.Component {
       url: '/create',
       type: "GET",
       success: async (data) => {
-       console.log('data',data)
        await that.setState({
           items: data
         })
-        console.log('zaid',this.state.items)
       },
       error: (err) => {
         console.log('err', err);
@@ -50,7 +48,7 @@ class Slideshow extends React.Component {
 
   render() {
   
-  console.log('jjjj',this.state.items)
+  if (this.state.items) {
     return (
       <Fade {...fadeProperties}>
         <div className="each-fade">
@@ -112,7 +110,9 @@ class Slideshow extends React.Component {
 
 
       </Fade>
-    )
+    ) } else {
+      return (<div>estanna</div>)
+    }
   }
 }
 export default Slideshow

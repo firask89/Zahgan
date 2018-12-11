@@ -11,13 +11,7 @@ class Eventcreat extends React.Component {
       show: false,
       Name: '',
       Phone: '',
-
-
-
     }
-
-
-
     this.handleSubmit = this.handleSubmit.bind(this);
     this.delete = this.delete.bind(this);
   }
@@ -44,7 +38,6 @@ class Eventcreat extends React.Component {
     //getComputedStyle. 
     this.state.items.attending.push(obj);
     this.state.items.availableSeats = this.state.items.availableSeats
-
 
     var yahya = this.state.items
     var y7ya = '/create/' + id;

@@ -18,7 +18,6 @@ class HomeClass extends React.Component {
         })
     }
     render() {
-        console.log("HomeClass", this.props.items)
         return (
             <div>
                 <div className="container-fluid" >
