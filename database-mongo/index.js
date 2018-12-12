@@ -12,7 +12,7 @@ const EventSchema = new Schema({
         required: [true, 'Name Field is Required']
     },
 
-    cost:{
+    cost: {
         type: Number,
         required: [true, 'Name Field is Required']
     },
@@ -40,6 +40,9 @@ const EventSchema = new Schema({
     attending: {
         type: Array
     },
+    userId: {
+        type: String
+    }
 });
 
 var Event = mongoose.model('Event', EventSchema);

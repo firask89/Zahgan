@@ -16,20 +16,22 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }))
-mongoose.connect('mongodb://amjad:amjad123@ds139251.mlab.com:39251/zahgan')
+//database connection
+
+mongoose.connect('mongodb://issa:isa123@ds257241.mlab.com:57241/zahgan')
+mongoose.Promise = global.Promise;
+// mongoose.connect('mongodb://amjad:amjad123@ds139251.mlab.com:39251/zahgan')
 
 //sessions
 app.use(cookieParser('shhhh, very secret'));
 app.use(session({
-  cookie: {secure: false, maxAge: 60000},
+  cookie: { secure: false, maxAge: 60000 },
   secret: 'shhh, it\'s a secret',
   resave: true,
   saveUninitialized: true
 }));
 
-//database connection
-mongoose.connect('mongodb://issa:isa123@ds257241.mlab.com:57241/zahgan')
-mongoose.Promise = global.Promise;
+
 
 
 var db = mongoose.connection;
@@ -59,6 +61,7 @@ app.post('/create', function (req, res, next) {
 
 //update event in the database
 app.put('/create/:id', function (req, res, next) {
+  console.log(req.session);
   Event.findByIdAndUpdate({
     _id: req.params.id
   }, req.body).then(function () {
@@ -281,6 +284,14 @@ app.post('/account/signin', (req, res, next) => {
         message: 'Error: Invalid Password.'
       });
     }
+    var allEvents;
+    User.find({ email: email }).then(function (user) {
+      Event.find({ userId: user._id }).then(function (events) {
+        allEvents = events;
+      });
+    })
+
+
     // Generate random JSON Webtoken to be saved in local storage
     var token = user.generateJwt(); //User database
     // Otherwise correct user
@@ -296,7 +307,8 @@ app.post('/account/signin', (req, res, next) => {
       return res.send({
         success: true,
         message: 'Valid User sign in',
-        token: token
+        token: token,
+        events: allEvents
       });
     })
   });
@@ -381,7 +393,7 @@ app.get('/creator/signin/check', (req, res, next) => {
 // Creator Logout
 app.get('/creator/logout', (req, res, next) => {
   console.log("before", req.session)
-  req.session.destroy(function() { //remove session
+  req.session.destroy(function () { //remove session
     res.status(200).send()
   });
   console.log("after", req.session)
@@ -425,7 +437,7 @@ var createSession = function (req, res, newCreator) {
     req.session.creatorID = String(newCreator._id); //most important section of this function
     req.session.cookie.expires = new Date(Date.now() + 3600000) //a date for expiration
     req.session.cookie.maxAge = 3600000; //a specific time to destroys
-    req.session.save(function(err) {
+    req.session.save(function (err) {
       //header is json
       console.log('after save session', req.session)
     })

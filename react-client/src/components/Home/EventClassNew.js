@@ -14,6 +14,7 @@ class EventClassNew extends React.Component {
       Name: '',
       Phone: '',
       isLoggedIn: false,
+      
 
     }
 
@@ -42,7 +43,7 @@ class EventClassNew extends React.Component {
   }
   // take the data when its submit
 
-  handleSubmit(event, item) {
+  handleSubmit(event) {
     console.log("secound parameter", this.state.items.attending)
     var obj = {
       Name: this.state.Name,
@@ -51,59 +52,35 @@ class EventClassNew extends React.Component {
     var id = this.state.items._id
     console.log('Name', this.state.Name)
     console.log("my items ana wy7ya", id)
-    //var array =[obj]
-    //var array= this.state.items.attending
-    //getComputedStyle. 
+
     this.state.items.attending.push(obj);
-    this.state.items.availableSeats = this.state.items.availableSeats
+    // this.state.items.availableSeats = this.state.items.availableSeats
 
 
-    var yahya = this.state.items
-    var y7ya = '/create/' + id;
+    var items = this.state.items
 
     $.ajax({
       type: "PUT",
       url: '/create/' + id,
-      data: yahya,
+      data: items,
       success: function (data) {
         console.log("my data", data)
         alert("successfully attended")
-        document.getElementById("name").value = ''
-        document.getElementById("phone").value = ''
+        // document.getElementById("name").value = ''
+        // document.getElementById("phone").value = ''
       }
     });
-    
-    
 
-
-    // alert(obj.eventName + ' saved !');
-
-    // $.ajax({
-    //   url: '/create',
-    //   success: (data) => {
-    //     console.log(data)
-    //     this.setState({
-    //       items: data
-    //     })
-    //   },
-    //   error: (err) => {
-    //     console.log('err', err);
-    //   }
-    // });
     event.preventDefault();
   }
 
   render() {
-
     console.log('gele', this.state.items)
-
     return (
       <div>
         <Modal
-
           show={this.state.show}
-          onClose={this.showModal}>
-      
+          onClose={this.showModal}> 
       <div className="row">
      
       <div className="col-sm-12">
@@ -113,7 +90,6 @@ class EventClassNew extends React.Component {
               </div></div>
 
               <div className="row">
-             
               <div className="col-sm-6">
               <div className="row"> <div className="col-sm-3">
               <p>Event Name</p>
