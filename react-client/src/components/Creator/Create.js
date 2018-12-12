@@ -8,6 +8,7 @@ import MapForCreator from './mapForCreator'
 import Eventsets from './Eventsets'
 import Eventcreatshow from './Eventcreatshow'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
+import CreatorEvents from './CreatorEvents'
 const AnyReactComponent = ({ text }) => <div>{text}</div>;
 
 class Create extends React.Component {
@@ -22,6 +23,7 @@ class Create extends React.Component {
     // all the function to set thes value from the text boxs is rten in the render function in line 
     super(props);
     this.state = {
+      appearCreate: true,
       host: '',
       event: '',
       cost: '',
@@ -48,10 +50,10 @@ class Create extends React.Component {
   // this function to git all the data from data base befor render the bage 
   //silf envok function 
   componentDidMount() {
+    $('#home').hide()
     $.ajax({
       url: '/create',
       success: (data) => {
-        console.log(data)
         this.setState({
           items: data
         })
@@ -72,7 +74,8 @@ class Create extends React.Component {
       availableSeats: this.state.sets,
       date: this.state.date,
       eventLocation: [this.state.location],
-      attending: []
+      attending: [],
+      email: this.props.email
     }
 
     // pst requst using ajax 
@@ -86,9 +89,6 @@ class Create extends React.Component {
         console.log("ajax data", data)
       }
     });
-
-
-
 
     alert(obj.eventName + ' saved !');
     // after post we use ajux to get the data agean so the creataer page always will be updated 
@@ -106,6 +106,7 @@ class Create extends React.Component {
     });
     event.preventDefault();
   }
+
   //colect all event sets 
   allseats(props) {
     var lastindex = props.state.items.length - 1
@@ -133,28 +134,33 @@ class Create extends React.Component {
     }
     return total
   }
+
   // to colect all resolved sets
   reservedSeats(props) {
     var total = 0
 
     var totalfun = function (i) {
-
-
       total = total + i.attending.length
     }
     for (var i = 0; i < props.state.items.length; i++) {
       totalfun(props.state.items[i])
     }
-
     return total
   }
+  
   //to hide and show the create event part
   appearCreate() {
-    $(document).ready(function () {
-      $("#createClick").click(function () {
-        $(".createEvent").toggle();
-      });
-    });
+    if (this.state.appearCreate) {
+      $('.createEvent').hide()
+      this.setState({
+        appearCreate: !this.state.appearCreate
+      })
+    } else {
+      $('.createEvent').show()
+      this.setState({
+        appearCreate: !this.state.appearCreate
+      })
+    }
   }
 
   modal() {
@@ -196,8 +202,9 @@ class Create extends React.Component {
         <div className="container-fluid page-cont">
           <h6 className="list-group-item active main-color-bg">
             <span className="glyphicon glyphicon-cog" aria-hidden="true"></span> Dashboard
-            <button onClick={this.logOut.bind(this)}>Logout</button>
-          </h6> 
+            <button style={{ float: 'right', marginTop: '0.5%', color: 'black' }} className="btn btn-lg" onClick={this.logOut.bind(this)}>Logout</button>
+          </h6>
+          
           <div className="row dash-row">
 
             <div className="col-4 data-box">
@@ -217,17 +224,19 @@ class Create extends React.Component {
                 <h3><span>{this.reservedSeats(this)}</span> <a href="/Reserved"> Reserved seats for all events </a> </h3>
               </div>
             </div>
-
           </div>
+          <div>
+          <CreatorEvents className="row" style={{position: 'relative'}} events={this.props.events}/>
         </div>
-        <div className="col-md-12">
+        </div>
 
+        
+        
 
-          <h4 className="col-sm-3 border p-3 mb-2 bg-primary text-white" id="createClick" onClick={this.appearCreate}> Create a new event </h4>
-          <div className=" row ">
-
-          </div>
-
+          <button style={{ marginLeft: '2.8%', fontSize: '15px' }} className="col-md-4 border p-3 mb-2 bg-primary text-white" id="createClick" onClick={this.appearCreate.bind(this)}> Create a new event </button>
+        <br />
+        <hr />
+        <div style={{ marginLeft: '2%', fontSize: '12px'}} className="col-md-6">
           <form onSubmit={this.handleSubmit}>
             <div className="createEvent">
               <div>
@@ -239,7 +248,6 @@ class Create extends React.Component {
                   </div>
                 </div>
               </div>
-
 
               <div>
                 <div className="form-group row">
@@ -302,10 +310,10 @@ class Create extends React.Component {
                 <div className="form-group row">
                   <label className="col-sm-2 col-form-label"> Event location:</label>
                   <div className="col-sm-8">
-                    <input id="location-input" className="form-control" placeholder="city, street" value={this.state.location}
+                    <input id="location-input" className="form-control col-md-12" placeholder="city, street" value={this.state.location}
                       onClick={this.modal} />
                   </div>
-                  <div className="col-sm-2"><button type="button" className="btn btn-info btn-lg" data-toggle="modal" data-target="#myModal">Map</button></div>
+                  <button style={{mfloat: 'right', marginTop: "-2%"}} type="button" className="btn btn-info btn-md" data-toggle="modal" data-target="#myModal">Map</button>
                 </div>
               </div>
 
@@ -325,7 +333,7 @@ class Create extends React.Component {
               </div>
             </div>
             <br />
-          </form >
+          </form>
 
         </div>
 
@@ -350,7 +358,9 @@ class Create extends React.Component {
             </div>
           </div>
         </div>
-
+        {/* <div className="container">
+          <CreatorEvents style={{position: 'relative'}} email={this.props.email}/>
+        </div> */}
       </div>
     );
   }

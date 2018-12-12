@@ -1,7 +1,5 @@
 import React from 'react'
-import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import EventClassNew from './EventClassNew'
-import Create from '../Creator/Create'
 import Slideshow from '../Slider/Slideshow';
 import Vision from '../about/Vision';
 
@@ -18,7 +16,6 @@ class HomeClass extends React.Component {
         })
     }
     render() {
-        console.log("HomeClass", this.props.items)
         return (
             <div>
                 <div className="container-fluid" >

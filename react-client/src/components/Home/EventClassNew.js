@@ -14,15 +14,13 @@ class EventClassNew extends React.Component {
       Name: '',
       Phone: '',
       isLoggedIn: false,
-      
-
+      email :null
     }
 
     this.handleSubmit = this.handleSubmit.bind(this);
   }
-
-  componentDidMount() {
-    console.log('componentdidmount')
+  componentDidMount () {
+    var that =this;
     if (localStorage.getItem('token')) {
       this.setState({
         isLoggedIn: true
@@ -32,6 +30,14 @@ class EventClassNew extends React.Component {
         isLoggedIn: false
       });
     }
+    $.ajax({
+      url : "/useremail",
+      success : function(data){
+        that.setState({
+          email : data
+        })
+      }
+    })
   }
 // to toggle the modal
   showModal = () => {
@@ -43,48 +49,48 @@ class EventClassNew extends React.Component {
   }
   // take the data when its submit
 
-  handleSubmit(event) {
-    console.log("secound parameter", this.state.items.attending)
+  handleSubmit(event, item) {
+    
     var obj = {
       Name: this.state.Name,
       Phone: this.state.Phone,
     }
     var id = this.state.items._id
-    console.log('Name', this.state.Name)
-    console.log("my items ana wy7ya", id)
-
+    //var array =[obj]
+    //var array= this.state.items.attending
+    //getComputedStyle. 
     this.state.items.attending.push(obj);
-    // this.state.items.availableSeats = this.state.items.availableSeats
-
 
     var items = this.state.items
-
+    var email = this.state.email
     $.ajax({
       type: "PUT",
       url: '/create/' + id,
-      data: items,
+      data: {
+        items:items,
+        email:email
+      },
       success: function (data) {
-        console.log("my data", data)
         alert("successfully attended")
         // document.getElementById("name").value = ''
         // document.getElementById("phone").value = ''
       }
     });
-
+    
     event.preventDefault();
   }
 
   render() {
-    console.log('gele', this.state.items)
     return (
       <div>
         <Modal
           show={this.state.show}
-          onClose={this.showModal}> 
-      <div className="row">
+          onClose={this.showModal}>
+      
+          <div className="row">
      
-      <div className="col-sm-12">
-      <div className="Popup-images">
+            <div className="col-sm-12">
+              <div className="Popup-images">
               <img src={this.state.items.url}></img>
               </div>
               </div></div>

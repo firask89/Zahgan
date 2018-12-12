@@ -29,15 +29,15 @@ const UserSchema = new mongoose.Schema({
     default: false
   },
 
-  eventsAttence:{
-    type:[]
+  allEvents: {
+    type: Array
   }
 });
 
 
 UserSchema.methods.getSpecificUser = (firstName, cb) => {
-  User.find({firstName: name}, (err, result) => {
-    if(err) {
+  User.find({ firstName: name }, (err, result) => {
+    if (err) {
       return cb(err, null);
     } else {
       return cb(null, result);
@@ -45,15 +45,15 @@ UserSchema.methods.getSpecificUser = (firstName, cb) => {
   })
 }
 
-UserSchema.methods.generateHash = function(password) {
+UserSchema.methods.generateHash = function (password) {
   return bcrypt.hashSync(password, bcrypt.genSaltSync(8), null);
 };
 
-UserSchema.methods.validPassword = function(password) {
+UserSchema.methods.validPassword = function (password) {
   return bcrypt.compareSync(password, this.password);
 };
 
-UserSchema.methods.generateJwt = function() {
+UserSchema.methods.generateJwt = function () {
   return jwt.sign({
     id: this._id,
     email: this.email,

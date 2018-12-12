@@ -11,19 +11,21 @@ class SignInCreator extends React.Component {
       email: '',
       password: '',
       isLoggedIn: false,
-      sess: ''
+      sess: '',
+      events: []
     };
     this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   componentDidMount() {
-    console.log('signInCreator componentdidmount')
+    $('#home').hide();
     $.ajax({
       type: "GET",
       url: '/creator/signin/check',
       success: (res) => {
-        console.log(res.sess)
+        console.log('res.sess==============', res.sess, res.email)
         if (res.success) {
+          this.getEvents(res.email)
           this.setState({
             isLoggedIn: true,
             sess: res.sess
@@ -38,6 +40,7 @@ class SignInCreator extends React.Component {
       email: this.state.email,
       password: this.state.password
     }
+    console.log("submit====", obj)
     $.ajax({
       type: "POST",
       url: '/creator/signin',
@@ -46,9 +49,9 @@ class SignInCreator extends React.Component {
         password: obj.password
       },
       success: (res) => {
-        alert(res.message)
-        alert(res.sess)
+        alert('hello!')
         if (res.success) {
+          this.getEvents(res.sess)
           this.setState({
             isLoggedIn: true,
             sess: res.sess
@@ -56,14 +59,34 @@ class SignInCreator extends React.Component {
         }
       }
     });
+
     event.preventDefault();
+  }
+
+  getEvents(email) {
+    console.log('in get events =============', this.state.email, "2", email)
+    if (this.state.email || email) {
+      $.ajax({
+        type: "POST",
+        url: '/creator/events',
+        data: { email: this.state.email || email },
+        success: (res) => {
+          if (res.success) {
+            this.setState({
+              events: res.events,
+            })
+          }
+        }
+      });
+    }
   }
 
 
   render() {
-    if (this.state.sess) {
+    if (this.state.sess && this.state.events.length > 0) {
+      console.log(this.state.events)
       return (
-        <Create></Create>
+        <Create events={this.state.events}></Create>
       )
     } else {
       return (
@@ -80,9 +103,3 @@ class SignInCreator extends React.Component {
   }
 }
 export default SignInCreator
-
-/*
-        <Redirect to={{
-          pathname: '/creator',
-        }}></Redirect>
-        */

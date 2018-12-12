@@ -16,11 +16,7 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }))
-//database connection
-
-mongoose.connect('mongodb://issa:isa123@ds257241.mlab.com:57241/zahgan')
-mongoose.Promise = global.Promise;
-// mongoose.connect('mongodb://amjad:amjad123@ds139251.mlab.com:39251/zahgan')
+mongoose.connect('mongodb://amjad:amjad123@ds139251.mlab.com:39251/zahgan')
 
 //sessions
 app.use(cookieParser('shhhh, very secret'));
@@ -61,16 +57,28 @@ app.post('/create', function (req, res, next) {
 
 //update event in the database
 app.put('/create/:id', function (req, res, next) {
-  console.log(req.session);
+  console.log(req.body.items);
   Event.findByIdAndUpdate({
     _id: req.params.id
-  }, req.body).then(function () {
+  }, req.body.items).then(function () {
     Event.findOne({
       _id: req.params.id
     }).then(function (event) {
       res.send(event);
     })
   });
+  console.log(req.body.email, 'bodyyy')
+  User.find({ email: req.body.email })
+    .then(function (user) {
+      // console.log(user, '=======user')
+      console.log('=======user', req.params.id, 'iddd')
+      var newArr = user[0].allEvents.push(req.params.id);
+      console.log(user[0].allEvents, 'user 000');
+      User.updateOne({ email: req.body.email }, { allEvents: newArr }, function (err, res) {
+
+      });
+      console.log(user[0], 'user 000');
+    })
 });
 
 //delete event in the database
@@ -238,7 +246,11 @@ app.post('/creator/signup', (req, res, next) => {
     });
   });
 });
-
+var userEmail = '';
+//to get user email from log in
+app.get('/useremail', function (req, res) {
+  res.send(userEmail)
+})
 // Signin User
 app.post('/account/signin', (req, res, next) => {
   console.log(req.session)
@@ -260,6 +272,8 @@ app.post('/account/signin', (req, res, next) => {
   }
 
   email = email.toLowerCase();
+
+  userEmail = email;
 
   User.find({
     email: email
@@ -284,7 +298,7 @@ app.post('/account/signin', (req, res, next) => {
         message: 'Error: Invalid Password.'
       });
     }
-    var allEvents;
+    var allEvents
     User.find({ email: email }).then(function (user) {
       Event.find({ userId: user._id }).then(function (events) {
         allEvents = events;
@@ -358,7 +372,7 @@ app.post('/creator/signin', (req, res, next) => {
         message: 'Error: Invalid Password.'
       });
     }
-
+    console.log("email in signin===      1")
     createSession(req, res, creator)
 
     // Otherwise correct creator
@@ -371,11 +385,13 @@ app.post('/creator/signin', (req, res, next) => {
           message: 'Error: server error.'
         });
       }
+      console.log("email in signin===", email)
       return res.send({
         success: true,
         message: 'Valid Manager sign in',
         token: doc._id,
-        sess: req.session.creatorID
+        sess: req.session.creatorID,
+        email: email
       });
     })
   });
@@ -386,7 +402,8 @@ app.get('/creator/signin/check', (req, res, next) => {
   return res.send({
     success: true,
     message: 'Check!',
-    sess: req.session.creatorID
+    sess: req.session.creatorID,
+    email: req.session.creatorEmail
   })
 });
 
@@ -435,6 +452,8 @@ var createSession = function (req, res, newCreator) {
   req.session.regenerate(function (err) {
     if (err) { return err }
     req.session.creatorID = String(newCreator._id); //most important section of this function
+    req.session.creatorEmail = String(newCreator.email);
+    console.log('email in session', req.session.creatorEmail)
     req.session.cookie.expires = new Date(Date.now() + 3600000) //a date for expiration
     req.session.cookie.maxAge = 3600000; //a specific time to destroys
     req.session.save(function (err) {
@@ -454,6 +473,19 @@ app.get('/getSpecificUser', function (req, res, next) {
       };
     });
     res.send(response);
+  });
+});
+
+//get user's events
+app.post('/creator/events', function (req, res, next) {
+  var email = req.body.email;
+  console.log('email', email)
+  Event.find({ email: email }, (err, result) => {
+    res.send({
+      success: true,
+      message: '!',
+      events: result,
+    });
   });
 });
 
