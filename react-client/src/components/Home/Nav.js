@@ -131,7 +131,7 @@ class Nav extends React.Component {
                     
                 </nav>
                 <div>
-                  <Modal className={'modal-open'} isOpen={this.state.modal} toggle={this.toggle} centered={true} size={'lg'} >
+                  <Modal className={'modal-open'} isOpen={this.state.modal} toggle={this.toggle} centered={true} size={'lg'}  style={{marginTop:'100px'}}>
                     <ModalBody>
                       <h2 style={{ textAlign: 'center', fontWeight: "bold", margin:'-5px', fontFamily: 'Times New Roman'}}>Contact Us</h2>  <hr/>
                       <h4 > 
