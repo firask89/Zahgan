@@ -3,6 +3,7 @@ import zahgan from './zahgan.jpg';
 import $ from 'jquery';
 import { Modal, ModalBody } from 'reactstrap';
 import './event.css';
+import Welcome from "../../welcome";
 const jwtDecode = require('jwt-decode');
 
 
@@ -127,7 +128,7 @@ class Nav extends React.Component {
             <li style={{ 'display': this.state.isLoggedIn === false ? 'block' : 'none' }}><a href="/signin">Sign in</a></li>
             <li style={{ 'display': this.state.isLoggedIn === false ? 'block' : 'none' }}><a href="/signup">Sign up</a></li>
             <li style={{ 'display': this.state.isLoggedIn === true ? 'block' : 'none' }}><a href="javascript:void(0);" onClick={this.signOut}>Log out</a></li>
-            <li style={{ 'display': this.state.isLoggedIn === true ? 'block' : 'none' }}><a href="javascript:void(0);" >Welcome {this.jsUcfirst(this.state.userName)}</a></li>
+            <li style={{ 'display': this.state.isLoggedIn === true ? 'block' : 'none' }}><a href="/welcome" >Welcome {this.jsUcfirst(this.state.userName)}</a></li>
           </ul>
 
         </nav>

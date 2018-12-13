@@ -3,6 +3,7 @@ import './App.css';
 import Nav from './components/Home/Nav'
 import { BrowserRouter, Route, Switch } from 'react-router-dom'
 import HomeClass from './components/Home/HomeClass'
+import Welcome from "./welcome";
 
 import $ from 'jquery';
 import Signup from './components/UserSignIn/Signup';
@@ -55,10 +56,9 @@ class App extends Component {
               <Route path='/Eventcreatshow' component={Eventcreatshow} />
               <Route path='/Eventsets' component={Eventsets} />
               <Route path='/Reserved' component={Reserved} />
+              <Route path='/welcome' component={Welcome} />
             </Switch>
-
           </div>
-
         </div>
       </BrowserRouter>
     );

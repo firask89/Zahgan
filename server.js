@@ -11,6 +11,9 @@ const UserSession = require('./database-mongo/UserSession');
 var cookieParser = require('cookie-parser'); //requires npm install
 var session = require('express-session'); //requires npm install
 
+var allEvents;
+// var globalEmail ;
+
 var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
@@ -70,17 +73,29 @@ app.put('/create/:id', function (req, res, next) {
   console.log(req.body.email, 'bodyyy')
   User.find({ email: req.body.email })
     .then(function (user) {
-      // console.log(user, '=======user')
-      console.log('=======user', req.params.id, 'iddd')
       var newArr = user[0].allEvents.push(req.params.id);
-      console.log(user[0].allEvents, 'user 000');
       User.updateOne({ email: req.body.email }, { allEvents: newArr }, function (err, res) {
-
       });
-      console.log(user[0], 'user 000');
     })
 });
-
+app.post('/welcome', function (req, res) {
+  var arr = [];
+  console.log('hello ', userEmail)
+  User.find({ email: userEmail })
+    .then(function (user) {
+      console.log(user, 'user====')
+      for (var i = 0; i < user[0].allEvents.length; i++) {
+        Event.find({ id: user[0].allEvents[i] })
+          .then(function (event) {
+            console.log(event, 'event====')
+            arr.push(event);
+            console.log(arr)
+          })
+      }
+    }).then(function () {
+      res.send(arr);
+    })
+})
 //delete event in the database
 app.delete('/create/:id', function (req, res, next) {
   Event.findByIdAndRemove({
@@ -206,7 +221,6 @@ app.post('/account/signup', (req, res, next) => {
 
 // Signup Creator
 app.post('/creator/signup', (req, res, next) => {
-  // console.log(req.body);
   const { body } = req;
   const { password } = body;
   let { email } = body;
@@ -298,7 +312,6 @@ app.post('/account/signin', (req, res, next) => {
         message: 'Error: Invalid Password.'
       });
     }
-    var allEvents
     User.find({ email: email }).then(function (user) {
       Event.find({ userId: user._id }).then(function (events) {
         allEvents = events;
@@ -321,8 +334,7 @@ app.post('/account/signin', (req, res, next) => {
       return res.send({
         success: true,
         message: 'Valid User sign in',
-        token: token,
-        events: allEvents
+        token: token
       });
     })
   });
